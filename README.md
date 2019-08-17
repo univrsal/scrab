@@ -17,7 +17,7 @@ image_folder={path}
 ```
 
 ### Demonstration
-![](out.gif)
+![demo](./out.gif)
 
 ### Credits
 Screenshot sourcecode reused and slightly tweaked from [qTox](https://github.com/qTox/qTox) licensed under the GPL v3.0:
