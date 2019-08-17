@@ -10,7 +10,7 @@ Open ``%appdata%\obs-studio\global.ini``
 ### Linux:
 Open ``~/.config/obs-studio/global.ini``
 
-Then add the follwing at the end of the file and replace ``{path}`` with whatever folder you want scrab to use for screenshots:
+Then add the following at the end of the file and replace ``{path}`` with whatever folder you want scrab to use for screenshots:
 ```ini
 [scrab]
 image_folder={path}
