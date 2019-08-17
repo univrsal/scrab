@@ -101,10 +101,40 @@ void hot_key_callback(void* data, obs_hotkey_id id, obs_hotkey_t* key,
     screen_grabber->showGrabber();
 }
 
+void scrab_save(obs_data_t* save_data, bool saving, void* unused)
+{
+    obs_data_t* data = nullptr;
+    obs_data_array_t* arr = nullptr;
+    UNUSED_PARAMETER(unused);
+
+    if (saving) {
+        data = obs_data_create();
+        arr = obs_hotkey_save(capture_key);
+        obs_data_set_array(data, "hotkey", arr);
+        obs_data_set_obj(save_data, "scrab", data);
+        obs_data_array_release(arr);
+        obs_data_release(data);
+    } else {
+        data = obs_data_get_obj(save_data, "scrab");
+        if (!data)
+            data = obs_data_create();
+        auto* arr = obs_data_get_array(data, "hotkey");
+        obs_hotkey_load(capture_key, arr);
+        obs_data_array_release(arr);
+        obs_data_release(data);
+    }
+}
+
 bool obs_module_load()
 {
     setup_config();
     capture_key = obs_hotkey_register_frontend(S_HOTKEY_CAPTURE, T_HOTKEY_CAPTURE_DESC,
-                                 hot_key_callback, nullptr);
+                 hot_key_callback, nullptr);
+    obs_frontend_add_save_callback(&scrab_save, nullptr);
     return true;
+}
+
+void obs_module_unload()
+{
+    /* NO-OP */
 }
