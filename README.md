@@ -2,7 +2,7 @@
 **Scr**een gr**ab**
 adds a configurable hotkey to quickly select a screen region and add it as an image source to the current scene
 
-The plugin saves all screenshots into your home directory by default. If you wish to change that open your obs-studio
+The plugin saves all screenshots into your home directory by default. If you wish to change that, open your obs-studio config
 and edit it:
 
 ### Windows:
