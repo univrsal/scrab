@@ -53,6 +53,14 @@ ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback)
     setupScene();
 }
 
+ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback,
+                                     QRect& rect)
+    : QObject(), mKeysBlocked(false), scene(nullptr), mcallback(callback), window(nullptr)
+{
+    screenGrab = grabScreen();
+    grabRegion(rect);
+}
+
 void ScreenshotGrabber::reInit()
 {
     window->resetCachedContent();
@@ -120,6 +128,11 @@ void ScreenshotGrabber::acceptRegion()
     QRect rect = this->chooserRect->chosenRect();
     if (rect.width() < 1 || rect.height() < 1)
         return;
+    grabRegion(rect);
+}
+
+void ScreenshotGrabber::grabRegion(QRect &rect)
+{
 
     // Scale the accepted region from DIPs to actual pixels
     rect.setRect(rect.x() * pixRatio, rect.y() * pixRatio, rect.width() * pixRatio,
@@ -128,7 +141,7 @@ void ScreenshotGrabber::acceptRegion()
     blog(LOG_DEBUG, "Screenshot accepted, chosen region: x: %i, y: %i, w: %i, h: %i",
          rect.x(), rect.y(), rect.width(), rect.height());
     QPixmap pixmap = this->screenGrab.copy(rect);
-    mcallback(!pixmap.size().isNull(), &pixmap);
+    mcallback(!pixmap.size().isNull(), &pixmap, rect);
     QWidget* b = static_cast<QWidget*>(obs_frontend_get_main_window());
     b->show();
     deleteLater();

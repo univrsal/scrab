@@ -34,13 +34,14 @@ class ScreenGrabberChooserRectItem;
 class ScreenGrabberOverlayItem;
 class ToolBoxGraphicsItem;
 
-typedef void (screenshot_callback_t)(bool result, QPixmap* arg);
+typedef void (screenshot_callback_t)(bool result, QPixmap* arg, const QRect& rect);
 
 class ScreenshotGrabber : public QObject
 {
     Q_OBJECT
 public:
     ScreenshotGrabber(screenshot_callback_t* callback);
+    ScreenshotGrabber(screenshot_callback_t* callback, QRect& rect);
     ~ScreenshotGrabber() override;
 
     bool eventFilter(QObject* object, QEvent* event) override;
@@ -64,9 +65,9 @@ private:
     bool handleKeyPress(QKeyEvent* event);
     void reject();
 
-    QPixmap grabScreen();
-
-    void beginRectChooser(QGraphicsSceneMouseEvent* event);
+	QPixmap grabScreen();
+	void grabRegion(QRect& rect);
+	void beginRectChooser(QGraphicsSceneMouseEvent* event);
 
 private:
     screenshot_callback_t* mcallback;
