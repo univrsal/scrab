@@ -2,24 +2,24 @@
  * licensed under the GPL v2.0
  * github.com/univrsal/scrab
  */
-#include <obs-module.h>
-#include <util/config-file.h>
-#include <obs-frontend-api.h>
+#include "screenshot/screenshotgrabber.hpp"
 #include <QDate>
 #include <QDir>
-#include "screenshot/screenshotgrabber.hpp"
+#include <obs-frontend-api.h>
+#include <obs-module.h>
+#include <util/config-file.h>
 
 OBS_DECLARE_MODULE()
 OBS_MODULE_USE_DEFAULT_LOCALE("scrab", "en-US")
 
-#define S_HOTKEY_CAPTURE		"scrab.hotkey.capture"
-#define S_HOTKEY_RECAPTURE		"scrab.hotkey.recapture"
+#define S_HOTKEY_CAPTURE "scrab.hotkey.capture"
+#define S_HOTKEY_RECAPTURE "scrab.hotkey.recapture"
 
-#define T_(t)					obs_module_text(t)
-#define T_HOTKEY_CAPTURE_DESC	T_("scrab.hotkey.capture.description")
-#define T_HOTKEY_RECAPTURE_DESC	T_("scrab.hotkey.recapture.description")
+#define T_(t) obs_module_text(t)
+#define T_HOTKEY_CAPTURE_DESC T_("scrab.hotkey.capture.description")
+#define T_HOTKEY_RECAPTURE_DESC T_("scrab.hotkey.recapture.description")
 
-#define SRC_NAME				"scrab-cap"
+#define SRC_NAME "scrab-cap"
 
 static QRect previous_region;
 static obs_hotkey_id capture_key;
@@ -48,18 +48,18 @@ void setup_config()
 {
     config_t* cfg = obs_frontend_get_global_config();
     config_set_default_string(cfg, "scrab", "image_folder",
-                              qPrintable(QDir::homePath()));
+        qPrintable(QDir::homePath()));
     config_set_default_int(cfg, "scrab", "x", 0);
     config_set_default_int(cfg, "scrab", "y", 0);
     config_set_default_int(cfg, "scrab", "w", 0);
     config_set_default_int(cfg, "scrab", "h", 0);
     picture_folder = config_get_string(cfg, "scrab", "image_folder");
 
-	previous_region = QRect(
-	    static_cast<int>(config_get_int(cfg, "scrab", "x")),
-	    static_cast<int>(config_get_int(cfg, "scrab", "y")),
-	    static_cast<int>(config_get_int(cfg, "scrab", "w")),
-	    static_cast<int>(config_get_int(cfg, "scrab", "h")));
+    previous_region = QRect(
+        static_cast<int>(config_get_int(cfg, "scrab", "x")),
+        static_cast<int>(config_get_int(cfg, "scrab", "y")),
+        static_cast<int>(config_get_int(cfg, "scrab", "w")),
+        static_cast<int>(config_get_int(cfg, "scrab", "h")));
 }
 
 /* Saves a pixmap into the plugin folder with timestamp
@@ -105,7 +105,7 @@ void screenshot_callback(bool result, QPixmap* arg, const QRect& rect)
 }
 
 void capture_key_callback(void* data, obs_hotkey_id id, obs_hotkey_t* key,
-                      bool pressed)
+    bool pressed)
 {
     if (id != capture_key || !pressed)
         return;
@@ -117,7 +117,7 @@ void capture_key_callback(void* data, obs_hotkey_id id, obs_hotkey_t* key,
 }
 
 void recapture_key_callback(void* data, obs_hotkey_id id, obs_hotkey_t* key,
-                      bool pressed)
+    bool pressed)
 {
     if (id != recapture_key || !pressed)
         return;
@@ -136,7 +136,7 @@ void recapture_key_callback(void* data, obs_hotkey_id id, obs_hotkey_t* key,
 void scrab_save(obs_data_t* save_data, bool saving, void* unused)
 {
     obs_data_t* data = nullptr;
-    obs_data_array_t* capture = nullptr, *recapture = nullptr;
+    obs_data_array_t *capture = nullptr, *recapture = nullptr;
     UNUSED_PARAMETER(unused);
 
     if (saving) {
@@ -168,9 +168,9 @@ bool obs_module_load()
 {
     setup_config();
     capture_key = obs_hotkey_register_frontend(S_HOTKEY_CAPTURE, T_HOTKEY_CAPTURE_DESC,
-                 capture_key_callback, nullptr);
+        capture_key_callback, nullptr);
     recapture_key = obs_hotkey_register_frontend(S_HOTKEY_RECAPTURE, T_HOTKEY_RECAPTURE_DESC,
-                                                 recapture_key_callback, nullptr);
+        recapture_key_callback, nullptr);
     obs_frontend_add_save_callback(&scrab_save, nullptr);
     return true;
 }

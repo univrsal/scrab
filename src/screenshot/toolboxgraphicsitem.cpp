@@ -55,7 +55,7 @@ void ToolBoxGraphicsItem::startAnimation(QAbstractAnimation::Direction direction
 }
 
 void ToolBoxGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
-                                QWidget* widget)
+    QWidget* widget)
 {
     painter->save();
     painter->setPen(Qt::NoPen);

@@ -18,11 +18,11 @@
 */
 
 #include "screengrabberoverlayitem.hpp"
+#include "screenshotgrabber.hpp"
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
-#include "screenshotgrabber.hpp"
 
 ScreenGrabberOverlayItem::ScreenGrabberOverlayItem(ScreenshotGrabber* grabber)
     : screnshootGrabber(grabber)
@@ -63,9 +63,9 @@ void ScreenGrabberOverlayItem::paint(QPainter* painter, const QStyleOptionGraphi
     qreal topY = chosenRect.y();
     qreal bottomY = chosenRect.y() + chosenRect.height();
 
-    painter->drawRect(0, 0, leftX, self.height());                      // Left of chosen
+    painter->drawRect(0, 0, leftX, self.height()); // Left of chosen
     painter->drawRect(rightX, 0, self.width() - rightX, self.height()); // Right of chosen
-    painter->drawRect(leftX, 0, chosenRect.width(), topY);              // Top of chosen
+    painter->drawRect(leftX, 0, chosenRect.width(), topY); // Top of chosen
     painter->drawRect(leftX, bottomY, chosenRect.width(),
-                      self.height() - bottomY); // Bottom of chosen
+        self.height() - bottomY); // Bottom of chosen
 }

@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include <QObject>
 #include <QPixmap>
 #include <QPointer>
-#include <QObject>
 
 class QGraphicsSceneMouseEvent;
 class QGraphicsPixmapItem;
@@ -34,10 +34,9 @@ class ScreenGrabberChooserRectItem;
 class ScreenGrabberOverlayItem;
 class ToolBoxGraphicsItem;
 
-typedef void (screenshot_callback_t)(bool result, QPixmap* arg, const QRect& rect);
+typedef void(screenshot_callback_t)(bool result, QPixmap* arg, const QRect& rect);
 
-class ScreenshotGrabber : public QObject
-{
+class ScreenshotGrabber : public QObject {
     Q_OBJECT
 public:
     ScreenshotGrabber(screenshot_callback_t* callback);
@@ -65,9 +64,9 @@ private:
     bool handleKeyPress(QKeyEvent* event);
     void reject();
 
-	QPixmap grabScreen();
-	void grabRegion(QRect& rect);
-	void beginRectChooser(QGraphicsSceneMouseEvent* event);
+    QPixmap grabScreen();
+    void grabRegion(QRect& rect);
+    void beginRectChooser(QGraphicsSceneMouseEvent* event);
 
 private:
     screenshot_callback_t* mcallback;
@@ -85,4 +84,3 @@ private:
 
     QVector<QPointer<QWidget>> mHiddenWindows;
 };
-

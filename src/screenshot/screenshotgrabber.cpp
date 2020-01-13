@@ -32,8 +32,8 @@
 #include <QMouseEvent>
 #include <QScreen>
 #include <QTimer>
-#include <obs-module.h>
 #include <obs-frontend-api.h>
+#include <obs-module.h>
 
 ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback)
     : QObject()
@@ -54,8 +54,12 @@ ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback)
 }
 
 ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback,
-                                     QRect& rect)
-    : QObject(), mKeysBlocked(false), scene(nullptr), mcallback(callback), window(nullptr)
+    QRect& rect)
+    : QObject()
+    , mKeysBlocked(false)
+    , scene(nullptr)
+    , mcallback(callback)
+    , window(nullptr)
 {
     screenGrab = grabScreen();
     grabRegion(rect);
@@ -131,15 +135,15 @@ void ScreenshotGrabber::acceptRegion()
     grabRegion(rect);
 }
 
-void ScreenshotGrabber::grabRegion(QRect &rect)
+void ScreenshotGrabber::grabRegion(QRect& rect)
 {
 
     // Scale the accepted region from DIPs to actual pixels
     rect.setRect(rect.x() * pixRatio, rect.y() * pixRatio, rect.width() * pixRatio,
-                 rect.height() * pixRatio);
+        rect.height() * pixRatio);
 
     blog(LOG_DEBUG, "Screenshot accepted, chosen region: x: %i, y: %i, w: %i, h: %i",
-         rect.x(), rect.y(), rect.width(), rect.height());
+        rect.x(), rect.y(), rect.width(), rect.height());
     QPixmap pixmap = this->screenGrab.copy(rect);
     mcallback(!pixmap.size().isNull(), &pixmap, rect);
     QWidget* b = static_cast<QWidget*>(obs_frontend_get_main_window());
@@ -168,11 +172,11 @@ void ScreenshotGrabber::setupScene()
     useNothingSelectedTooltip();
 
     connect(this->chooserRect, &ScreenGrabberChooserRectItem::doubleClicked, this,
-            &ScreenshotGrabber::acceptRegion);
+        &ScreenshotGrabber::acceptRegion);
     connect(this->chooserRect, &ScreenGrabberChooserRectItem::regionChosen, this,
-            &ScreenshotGrabber::chooseHelperTooltipText);
+        &ScreenshotGrabber::chooseHelperTooltipText);
     connect(this->chooserRect, &ScreenGrabberChooserRectItem::regionChosen, this->overlay,
-            &ScreenGrabberOverlayItem::setChosenRect);
+        &ScreenGrabberOverlayItem::setChosenRect);
 }
 
 void ScreenshotGrabber::useNothingSelectedTooltip()
@@ -229,7 +233,7 @@ QPixmap ScreenshotGrabber::grabScreen()
 
     // Multiply by devicePixelRatio to get actual desktop size
     return screen->grabWindow(QApplication::desktop()->winId(), rec.x() * pixRatio,
-                              rec.y() * pixRatio, rec.width() * pixRatio, rec.height() * pixRatio);
+        rec.y() * pixRatio, rec.width() * pixRatio, rec.height() * pixRatio);
 }
 
 void ScreenshotGrabber::beginRectChooser(QGraphicsSceneMouseEvent* event)

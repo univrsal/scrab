@@ -24,8 +24,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 
-enum
-{
+enum {
     HandleSize = 10,
     MinRectSize = 2,
 };
@@ -65,7 +64,7 @@ ScreenGrabberChooserRectItem::~ScreenGrabberChooserRectItem()
 QRectF ScreenGrabberChooserRectItem::boundingRect() const
 {
     return QRectF(-HandleSize - 1, -HandleSize - 1, rectWidth + HandleSize + 1,
-                  rectHeight + HandleSize + 1);
+        rectHeight + HandleSize + 1);
 }
 
 void ScreenGrabberChooserRectItem::beginResize(QPointF mousePos)
