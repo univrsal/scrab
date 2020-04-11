@@ -5,7 +5,7 @@ version=$1
 data_dir="../data"
 project="scrab"
 arch="ubuntu.x64"
-build_location="../../../qtc-relwithdeb/rundir/RelWithDebInfo/obs-plugins/64bit"
+build_location="../../../relwithdebinfo/rundir/RelWithDebInfo/obs-plugins/64bit"
 build_dir=$project.v$version.$arch
 
 if [ -z "$version" ]; then
