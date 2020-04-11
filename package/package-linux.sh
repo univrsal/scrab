@@ -3,7 +3,7 @@
 
 version=$1
 data_dir="../data"
-project="crab"
+project="scrab"
 arch="ubuntu.x64"
 build_location="../../../qtc-relwithdeb/rundir/RelWithDebInfo/obs-plugins/64bit"
 build_dir=$project.v$version.$arch
@@ -26,6 +26,7 @@ cp -R $data_dir $build_dir/plugin
 echo "Fetching misc files"
 cp ../LICENSE $build_dir/LICENSE.txt
 cp ./README.txt $build_dir/README.txt
+cp ./install-linux.sh $build_dir/
 
 echo "Writing version number $version"
 sed -i -e "s/@VERSION/$version/g" $build_dir/README.txt
