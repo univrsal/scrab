@@ -1,0 +1,3 @@
+build-scrab*/
+src/plugin-macros.generated.h
+*.user
