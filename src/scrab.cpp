@@ -2,6 +2,7 @@
  * licensed under the GPL v2.0
  * github.com/univrsal/scrab
  */
+#include "plugin-macros.generated.h"
 #include "screenshot/screenshotgrabber.hpp"
 #include <QDate>
 #include <QDir>
@@ -19,6 +20,7 @@ OBS_MODULE_USE_DEFAULT_LOCALE("scrab", "en-US")
 #define S_HOTKEY_RECAPTURE "scrab.hotkey.recapture"
 #define S_CONTINOUS_MODE "continous"
 #define S_PICTURE_FOLDER "image_folder"
+#define S_PRIMARY_SCREEN "primary_screen"
 
 #define T_(t) obs_module_text(t)
 #define T_HOTKEY_CAPTURE_DESC T_("scrab.hotkey.capture.description")
@@ -77,6 +79,7 @@ void setup_config()
     config_t* cfg = obs_frontend_get_global_config();
     config_set_default_string(cfg, "scrab", S_PICTURE_FOLDER,
         qt_to_utf8(QDir::homePath()));
+    config_set_default_int(cfg, "scrab", S_PRIMARY_SCREEN, -1);
     config_set_default_int(cfg, "scrab", "x", 0);
     config_set_default_int(cfg, "scrab", "y", 0);
     config_set_default_int(cfg, "scrab", "w", 0);
@@ -206,6 +209,7 @@ void scrab_save(obs_data_t* save_data, bool saving, void* unused)
 
 bool obs_module_load()
 {
+    blog(LOG_INFO, "[%s] Loading v%s", PLUGIN_NAME, PLUGIN_VERSION);
     setup_config();
     capture_key = obs_hotkey_register_frontend(S_HOTKEY_CAPTURE, T_HOTKEY_CAPTURE_DESC,
         capture_key_callback, nullptr);

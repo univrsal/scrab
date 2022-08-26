@@ -24,7 +24,6 @@
 
 #include <QApplication>
 #include <QDebug>
-#include <QDesktopWidget>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
@@ -34,12 +33,13 @@
 #include <QTimer>
 #include <obs-frontend-api.h>
 #include <obs-module.h>
+#include <util/config-file.h>
 
 ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback)
     : QObject()
     , mKeysBlocked(false)
-    , scene(nullptr)
     , mcallback(callback)
+    , scene(nullptr)
 {
     window = new QGraphicsView(scene); // Top-level widget
     window->setWindowFlags(Qt::FramelessWindowHint | Qt::BypassWindowManagerHint);
@@ -57,8 +57,8 @@ ScreenshotGrabber::ScreenshotGrabber(screenshot_callback_t* callback,
     QRect& rect)
     : QObject()
     , mKeysBlocked(false)
-    , scene(nullptr)
     , mcallback(callback)
+    , scene(nullptr)
     , window(nullptr)
 {
     screenGrab = grabScreen();
@@ -228,12 +228,16 @@ void ScreenshotGrabber::reject()
 
 QPixmap ScreenshotGrabber::grabScreen()
 {
+    auto screen_id = config_get_int(obs_frontend_get_global_config(), "scrab", "primary_screen");
+    QPixmap map {};
     QScreen* screen = QGuiApplication::primaryScreen();
+    if (screen_id >= 0 && screen_id < QGuiApplication::screens().length())
+        screen = QGuiApplication::screens().at(screen_id);
     QRect rec = screen->virtualGeometry();
 
-    // Multiply by devicePixelRatio to get actual desktop size
-    return screen->grabWindow(QApplication::desktop()->winId(), rec.x() * pixRatio,
+    return screen->grabWindow(0, rec.x() * pixRatio,
         rec.y() * pixRatio, rec.width() * pixRatio, rec.height() * pixRatio);
+    return map;
 }
 
 void ScreenshotGrabber::beginRectChooser(QGraphicsSceneMouseEvent* event)
