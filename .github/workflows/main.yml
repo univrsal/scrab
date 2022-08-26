@@ -16,7 +16,7 @@ on:
       - '**.html'
 
 env:
-  PLUGIN_NAME: 'tuna'
+  PLUGIN_NAME: 'scrab'
 
 jobs:
   clang_check:
